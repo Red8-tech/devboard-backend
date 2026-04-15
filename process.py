@@ -36,8 +36,10 @@ def compute_weekly_commits(events: list) -> list[int]:
         delta_days = (now - created).days
         week_index = delta_days // 7
         if 0 <= week_index < 12:
-            weeks[week_index] += event["payload"].get("size", 0)
+            commits = event.get("payload", {}).get("size", 1)
+            weeks[week_index] += commits
     return list(reversed(weeks))
+
 
 def build_user_stats(profile: dict, repos: list, events: list) -> UserStats:
     return UserStats(
